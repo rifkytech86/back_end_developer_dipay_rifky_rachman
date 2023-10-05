@@ -1,0 +1,768 @@
+# This is the OpenAPI specification for your service. It is used to generate the client code.
+# To generate the server code, use the Gradle task `openApiGenerate`. The 
+# generated code will be placed in `build/generate-resources/main`.
+#
+# We will evaluate you based on how well you design your API.
+# 1. How well it follows REST principles.
+# 2. How easy it is to understand and use.
+#
+# References
+# 1. https://swagger.io/specification/
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: User Service
+  license:
+    name: MIT
+  x-oapi-codegen-middlewares:
+    - Middleware
+
+servers:
+  - url: http://localhost
+paths:
+  /api/hello:
+    get:
+      summary: This is just a test endpoint to get you started. Please delete this endpoint.
+      operationId: hello
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Test return
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelloResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/login:
+    post:
+      summary: User Login
+      operationId: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorUserName"
+                password:
+                  type: string
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorPassword"
+              required:
+                - username
+                - password
+      responses:
+        '200':
+          description: Response login user admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        '400':
+          description: Bad Request Code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/companies:
+    post:
+      summary: Add Company
+      operationId: AddCompany
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_name:
+                  type: string
+                  example: "dipay"
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorCompanyName"
+                telephone_number:
+                  type: string
+                  example: "+6287535353"
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorTelephoneNumber"
+                address:
+                  type: string
+                  example: "Sudirman 610"
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorAddress"
+              required:
+                - company_name
+                - telephone_number
+                - address
+      responses:
+        '200':
+          description: Response create company
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompaniesResponse"
+        '400':
+          description: Bad Request Code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      summary: this is for get companies
+      operationId: GetCompany
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Response get company
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCompanyResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/companies/{id}/set_active:
+    put:
+      summary: this is for update status active
+      operationId: UpdateCompanyStatusActive
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response update set status active company
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateSetActiveCompany"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/companies/{company_id}/employees:
+    post:
+      summary: Add Employee
+      operationId: AddEmployee
+      parameters:
+        - name: company_id
+          in: path
+          description: ID of the company
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "employee dipay"
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorEmployee"
+                email:
+                  type: string
+                  example: "dipay@gmail.com"
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorEmail"
+                phone_number:
+                  type: string
+                  example: "+6287535353"
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorTelephoneNumber"
+                jobtitle:
+                  type: string
+                  example: "Backend Developer"
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorJobTitle"
+              required:
+                - name
+                - email
+                - phone_number
+                - jobtitle
+      responses:
+        '200':
+          description: Response create company
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AddEmployeeResponse"
+        '400':
+          description: Bad Request Code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/employees/{id}:
+    get:
+      summary: this is for get get employee by id
+      operationId: GetEmployeeByID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Response get company
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetEmployeeByIDResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      summary: this is for Delete employee by ID
+      operationId: DeleteEmployeeByID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Response Delete Employee By ID, No Content
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/companies/{id}/employees:
+    get:
+      summary: this is for get data employee by company
+      operationId: GetEmployeeByCompanyID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Response get company
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetEmployeeByCompanyIDResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/companies/{company_id}/employees/{employee_id}:
+    put:
+      summary: this is for update employee data
+      operationId: UpdateEmployeeData
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: company_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: employee_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "employee dipay"
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorEmployee"
+                email:
+                  type: string
+                  example: "dipay@gmail.com"
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorEmail"
+                phone_number:
+                  type: string
+                  example: "+6287535353"
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorTelephoneNumber"
+                jobtitle:
+                  type: string
+                  example: "Backend Developer"
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorJobTitle"
+              required:
+                - name
+                - email
+                - phone_number
+                - jobtitle
+      responses:
+        '200':
+          description: Response uupdate employees data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateEmployeeDataResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/countries:
+    get:
+      summary: this is for get data api countries from extenal
+      operationId: GetDataCountries
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Response get data api countries from extenal
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetDataCountriesResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/duplicate-zeroes:
+    post:
+      summary: this is for test 1 find diplicate zero
+      operationId: DuplicateZero
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                n:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                  x-oapi-codegen-extra-tags:
+                    validate: "required,validatorDuplicateZero"
+                  example: [1, 0, 2, 3, 4, 5, 0]
+              required:
+                - n
+
+      responses:
+        '200':
+          description: Response create company
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DuplicateZeroResponse"
+        '400':
+          description: Bad Request Code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    HelloResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    LoginResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            token:
+              type: string
+      example:
+        code: 201
+        status: "201"
+        data:
+          token: "auth rsa 256"
+        message: Success
+    CompaniesResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+      example:
+        code: 201
+        status: "201"
+        data:
+          id: "user id"
+        message: Success
+
+    AddEmployeeResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            company_id:
+              type: string
+      example:
+        code: 201
+        status: "201"
+        data:
+          id: "34234234234"
+          company_id: "123456777"
+        message: Success
+
+    UpdateEmployeeDataResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            company_id:
+              type: string
+      example:
+        code: 200
+        status: "200"
+        data:
+          id: "34234234234"
+          company_id: "123456777"
+        message: Success
+
+    GetCompanyResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            count:
+              type: integer
+            rows:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  company_name:
+                    type: string
+                  telephone_number:
+                    type: string
+                  is_active:
+                    type: boolean
+                  address:
+                    type: string
+      example:
+        code: 200
+        status: "200"
+        data:
+          count: 1
+          rows: [
+            {
+              "id": 1,
+              "company_name": "xxxx",
+              "telephone_number": "xxxx",
+              "is_active": false,
+              "address": "xxxx"
+            },
+            {
+              "id": 2,
+              "company_name": "xxxx",
+              "telephone_number": "xxxx",
+              "is_active": false,
+              "address": "xxxx"
+            }
+
+          ]
+        message: Success
+
+    DuplicateZeroResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            result:
+              type: array
+              items:
+                type: integer
+                format: int32
+
+      example:
+        code: 200
+        status: "200"
+        data:
+          result: [
+            1,
+            0,
+            0,
+            2,
+            3,
+            0,
+            0,
+            4
+          ]
+        message: Success
+
+    GetDataCountriesResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              region:
+                type: string
+              timezones:
+                type: array
+                items:
+                  type: string
+      example:
+        code: 200
+        status: "200"
+        data: [
+          {
+            "name": "name 1",
+            "region": "Europe",
+            "timezones": ["UTC+02:00", "UTC+06:00"]
+          },
+          {
+            "name": "name 2",
+            "region": "asia",
+            "timezones": ["UTC+02:00", "UTC+06:00"]
+          }
+
+        ]
+        message: Success
+
+    GetEmployeeByCompanyIDResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            employees:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  phone_number:
+                    type: string
+                  jobtitle:
+                    type: string
+      example:
+        code: 200
+        status: "200"
+        data:
+          id: "651ecc5e91bf790b27744142"
+          company_name: "dipay"
+          is_active: false
+          employees: [
+            {
+              "id": "651ecc5e91bf790b27744141",
+              "name": "name",
+              "phone_number": "+62083288844",
+              "jobtitle": "Backend",
+            },
+            {
+              "id": "651ecc5e91bf790b27744142",
+              "name": "name2",
+              "phone_number": "+62083288845",
+              "jobtitle": "manager",
+            }
+
+          ]
+        message: Success
+
+    UpdateSetActiveCompany:
+      type: object
+      properties:
+        status:
+          type: integer
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            is_active:
+              type: boolean
+      example:
+        code: 201
+        status: "201"
+        data:
+          id: "user id"
+          is_active: true
+        message: Success
+
+    GetEmployeeByIDResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            phone_number:
+              type: string
+            jobtitle:
+              type: string
+      example:
+        code: 201
+        status: "201"
+        data:
+          id: "user id"
+          name: "dipay name"
+          phone_number: "+6287736363644"
+          jobtitle: "manager"
+        message: Success
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        status:
+          type: string
+        errors:
+          type: string
+          properties:
+            list_error:
+              type: array
+              items:
+                type: string
+                description: List of errors
+      example:
+        code: 400
+        status: "400"
+        errors:
+          list_error:
+            - Ups Something When Wrong!
+        message: invalid request
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT Authorization header using RS256

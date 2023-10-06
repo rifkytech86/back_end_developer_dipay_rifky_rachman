@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/dipay/internal"
 	"github.com/go-playground/validator/v10"
+	"regexp"
+	"strings"
 )
 
 const (
@@ -18,6 +20,7 @@ const (
 	ValidDuplicateZero = "validatorDuplicateZero"
 )
 
+//go:generate mockery --name IValidator
 type IValidator interface {
 	Struct(s interface{}) []ValidationError
 	RegisterValidation(tag string, fn validator.Func, callValidationEvenIfNull ...bool) error
@@ -63,6 +66,9 @@ func ValidatorUsername(fl validator.FieldLevel) bool {
 	if userName == "" {
 		return false
 	}
+	if len(userName) > 30 {
+		return false
+	}
 
 	return true
 }
@@ -73,20 +79,28 @@ func ValidatorAddress(fl validator.FieldLevel) bool {
 		return false
 	}
 
+	if len(address) < 10 || len(address) > 50 {
+		return false
+	}
 	return true
 }
 
 func ValidatorCompanyName(fl validator.FieldLevel) bool {
-	address := fl.Field().String()
-	if address == "" {
+	companyName := fl.Field().String()
+	if companyName == "" {
 		return false
 	}
-
+	if len(companyName) < 3 || len(companyName) > 50 {
+		return false
+	}
 	return true
 }
 func ValidatePhoneNumber(fl validator.FieldLevel) bool {
-	address := fl.Field().String()
-	if address == "" {
+	phoneNumber := fl.Field().String()
+	if phoneNumber == "" {
+		return false
+	}
+	if len(phoneNumber) < 8 || len(phoneNumber) > 16 {
 		return false
 	}
 
@@ -98,13 +112,40 @@ func ValidateEmail(fl validator.FieldLevel) bool {
 	if email == "" {
 		return false
 	}
+	if len(email) < 5 || len(email) > 255 {
+		return false
+	}
 
-	return true
+	return isValidEmail(email)
+
+}
+
+func isValidEmail(email string) bool {
+	// Regular expression pattern for a simple email validation
+	// This pattern allows for alphanumeric characters, dots, underscores, and hyphens in the local part.
+	// It also allows for a single dot followed by alphanumeric characters in the domain part.
+	// This is a basic validation and may not cover all edge cases.
+	// For more comprehensive validation, you can use a library or a more complex regex pattern.
+	emailRegex := regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
+
+	return emailRegex.MatchString(email)
 }
 
 func ValidateJobTitle(fl validator.FieldLevel) bool {
 	jobTitle := fl.Field().String()
 	if jobTitle == "" {
+		return false
+	}
+	convJobTitle := strings.ToLower(jobTitle)
+	statusJobTitle := internal.JobTittle(convJobTitle)
+	switch statusJobTitle {
+	case internal.JobTitleManager:
+		return true
+	case internal.JobTitleDirector:
+		return true
+	case internal.JobTitleStaff:
+		return true
+	default:
 		return false
 	}
 
@@ -138,20 +179,47 @@ func ValidatorPassword(fl validator.FieldLevel) bool {
 		return false
 	}
 
+	if len(password) > 30 {
+		return false
+	}
+
 	return true
 }
 
 func GetCustomMessage(msgError string, field string) string {
 	if msgError == ValidUsername {
-		customErrorMessage := fmt.Sprintf(internal.ErrorInvalidRequestUserName.String(), field)
+		customErrorMessage := fmt.Sprintf("%s %s", internal.ErrorInvalidRequestUserName.String(), field)
 		return customErrorMessage
 	}
 
 	if msgError == ValidPassword {
-		customErrorMessage := fmt.Sprintf(internal.ErrorInvalidRequestPassword.String(), field)
+		customErrorMessage := fmt.Sprintf("%s %s", internal.ErrorInvalidRequestPassword.String(), field)
+		return customErrorMessage
+	}
+	if msgError == ValidCompanyName {
+		customErrorMessage := fmt.Sprintf("%s %s", internal.ErrorInvalidRequestCompanyName.String(), field)
 		return customErrorMessage
 	}
 
-	return fmt.Sprintf(internal.ErrorInvalidRequest.String(), field, msgError)
+	if msgError == ValidPhoneNumber {
+		customErrorMessage := fmt.Sprintf("%s %s", internal.ErrorInvalidRequestPhoneNumber.String(), field)
+		return customErrorMessage
+	}
+
+	if msgError == ValidAddress {
+		customErrorMessage := fmt.Sprintf("%s %s", internal.ErrorInvalidRequestAddress.String(), field)
+		return customErrorMessage
+	}
+
+	if msgError == ValidJobTitle {
+		customErrorMessage := fmt.Sprintf("%s %s", internal.ErrorInvalidRequestJobTitle.String(), field)
+		return customErrorMessage
+	}
+	if msgError == ValidEmail {
+		customErrorMessage := fmt.Sprintf("%s %s", internal.ErrorInvalidRequestEmail.String(), field)
+		return customErrorMessage
+	}
+
+	return fmt.Sprintf("%s %s", internal.ErrorInvalidRequest.String(), field)
 
 }

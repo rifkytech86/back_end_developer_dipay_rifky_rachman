@@ -52,6 +52,7 @@ func (w *ServerInterfaceWrapper) AddEmployee(ctx echo.Context, id string) error 
 func (w *ServerInterfaceWrapper) GetEmployeeByID(ctx echo.Context, id string) error {
 	return w.EmployeeController.GetEmployeeByID(ctx, id)
 }
+
 func (w *ServerInterfaceWrapper) GetEmployeeByCompanyID(ctx echo.Context, id string) error {
 	return w.EmployeeController.GetEmployeeByCompanyID(ctx, id)
 }
@@ -67,6 +68,7 @@ func (w *ServerInterfaceWrapper) DeleteEmployeeByID(ctx echo.Context, id string)
 func (w *ServerInterfaceWrapper) GetDataCountries(ctx echo.Context) error {
 	return w.CountriesController.GetDataCountries(ctx)
 }
+
 func (w *ServerInterfaceWrapper) DuplicateZero(ctx echo.Context) error {
 	return w.DuplicateZeroController.DuplicateZero(ctx)
 }

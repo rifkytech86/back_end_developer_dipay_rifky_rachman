@@ -19,6 +19,7 @@ type companyController struct {
 	Validator      validations.IValidator
 }
 
+//go:generate mockery --name ICompanyController
 type ICompanyController interface {
 	AddCompany(ctx echo.Context) error
 	GetCompany(ctx echo.Context) error

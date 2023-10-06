@@ -25,5 +25,5 @@ func NewEmployees() IEmployees {
 }
 
 func (u *Employees) GetTableName() string {
-	return "Employees"
+	return "employees"
 }

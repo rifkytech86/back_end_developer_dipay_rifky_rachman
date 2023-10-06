@@ -6,13 +6,13 @@ import (
 )
 
 type Companies struct {
-	ID              primitive.ObjectID `bson:"_id"`
-	CompanyName     string             `bson:"company_name"`
-	TelephoneNumber string             `bson:"telephone_number"`
-	Address         string             `bson:"address"`
+	ID              primitive.ObjectID `bson:"_id,omitempty"`
+	CompanyName     string             `bson:"company_name,omitempty"`
+	TelephoneNumber string             `bson:"telephone_number,omitempty"`
+	Address         string             `bson:"address,omitempty"`
 	IsActive        bool               `bson:"is_active"`
-	CreatedAt       time.Time          `bson:"created_at"`
-	UpdatedAt       time.Time          `bson:"updated_at"`
+	CreatedAt       time.Time          `bson:"created_at,omitempty"`
+	UpdatedAt       time.Time          `bson:"updated_at,omitempty"`
 }
 
 //go:generate mockery --name ICompanies

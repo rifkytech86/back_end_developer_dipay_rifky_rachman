@@ -17,6 +17,7 @@ type countriesController struct {
 	ContextTimeOut   int
 }
 
+//go:generate mockery --name ICountriesController
 type ICountriesController interface {
 	GetDataCountries(ctx echo.Context) error
 }

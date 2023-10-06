@@ -10,7 +10,7 @@ import (
 func (h *MyHandler) UserAdminHandler() controller.IUserAdminController {
 	table := model.NewUserAdmin()
 	userAdminRepository := repositories.NewUserAdminRepository(h.Application.MongoDBClient, table)
-	userAdminUseCase := usecase.NewUseCaseUserAdmin(userAdminRepository, h.Application.JWT)
+	userAdminUseCase := usecase.NewUseCaseUserAdmin(userAdminRepository, h.Application.JWT, h.Application.ENV.SecretEndCrypt)
 	userAdminController := controller.NewUserAdminController(userAdminUseCase, h.Application.ENV.ContextTimeOut, h.Application.Validator)
 	return userAdminController
 }

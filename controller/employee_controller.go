@@ -19,6 +19,7 @@ type employeeController struct {
 	Validator       validations.IValidator
 }
 
+//go:generate mockery --name IEmployeeController
 type IEmployeeController interface {
 	AddEmployee(c echo.Context, companyId string) error
 	GetEmployeeByID(c echo.Context, employeeID string) error

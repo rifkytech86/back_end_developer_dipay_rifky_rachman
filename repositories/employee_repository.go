@@ -3,7 +3,6 @@ package repositories
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/dipay/internal"
 	"github.com/dipay/internal/db"
 	"github.com/dipay/model"
@@ -15,6 +14,7 @@ type employeeRepository struct {
 	EmployeeModel model.IEmployees
 }
 
+//go:generate mockery --name IEmployeeRepository
 type IEmployeeRepository interface {
 	Fetch(ctx context.Context, filter interface{}) ([]*model.Employees, error)
 	FetchOne(ctx context.Context, filter interface{}, result interface{}) error
@@ -63,7 +63,6 @@ func (e *employeeRepository) FetchOne(ctx context.Context, filter interface{}, r
 
 func (e *employeeRepository) Create(ctx context.Context, model interface{}) (*primitive.ObjectID, error) {
 	companyTable := e.EmployeeModel.GetTableName()
-	fmt.Println(companyTable)
 	collection := e.MongoDatabase.Collection(companyTable)
 	resLastInsertedID, err := collection.InsertOne(ctx, model)
 	if err != nil {

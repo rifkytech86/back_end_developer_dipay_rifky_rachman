@@ -9,6 +9,7 @@ type countriesUseCase struct {
 	CountriesRepository repositories.ICountriesRepository
 }
 
+//go:generate mockery --name ICountriesUseCase
 type ICountriesUseCase interface {
 	GetCountries(context.Context) ([]repositories.CountriesPayload, error)
 }

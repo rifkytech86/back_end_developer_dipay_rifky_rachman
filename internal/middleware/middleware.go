@@ -1,9 +1,15 @@
 package middleware
 
-import "github.com/labstack/echo/v4"
+import (
+	"github.com/dipay/commons"
+	"github.com/dipay/internal"
+	"github.com/dipay/internal/jwt"
+	"github.com/labstack/echo/v4"
+	"net/http"
+	"strings"
+)
 
 type middlewareRoot struct {
-	// [method][path]
 	middlewares map[string]map[string][]echo.MiddlewareFunc
 	router      *echo.Router
 	echo        *echo.Echo
@@ -63,4 +69,37 @@ func (mwr *middlewareRoot) Exec(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 		return next(c)
 	}
+}
+
+func AuthMiddleware(jwt jwt.IJWTRSAToken) echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			authHeader := c.Request().Header.Get(echo.HeaderAuthorization)
+			if authHeader == "" {
+				return commons.ErrorResponse(c, http.StatusForbidden, internal.ErrMissingAuthorizationHeader.GetCode(), internal.ErrMissingAuthorizationHeader.String())
+			}
+
+			splitToken := strings.Split(authHeader, "Bearer ")
+			if len(splitToken) != 2 {
+				return commons.ErrorResponse(c, http.StatusForbidden, internal.ErrInvalidTokenFormat.GetCode(), internal.ErrInvalidTokenFormat.String())
+			}
+
+			tokenString := splitToken[1]
+			userID, userName, err := jwt.ParserToken(tokenString)
+			if err != nil {
+				return commons.ErrorResponse(c, http.StatusForbidden, internal.ErrInvalidToken.GetCode(), internal.ErrInvalidToken.String())
+			}
+			if userID == "" {
+				return commons.ErrorResponse(c, http.StatusForbidden, internal.ErrInvalidToken.GetCode(), internal.ErrInvalidToken.String())
+			}
+			if userName == "" {
+				return commons.ErrorResponse(c, http.StatusForbidden, internal.ErrInvalidToken.GetCode(), internal.ErrInvalidToken.String())
+			}
+
+			c.Set("userID", userID)
+			c.Set("userName", userName)
+			return next(c)
+		}
+	}
+
 }

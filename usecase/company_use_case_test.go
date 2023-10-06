@@ -164,3 +164,126 @@ func Test_companyUseCase_GetCompany(t *testing.T) {
 		})
 	}
 }
+
+func Test_companyUseCase_UpdateCompanyStatusActive(t *testing.T) {
+	type fields struct {
+		CompanyRepository repositories.ICompanyRepository
+	}
+
+	type args struct {
+		ctx context.Context
+		id  string
+	}
+	tests := []struct {
+		name           string
+		fields         fields
+		args           args
+		wantIdAffected string
+		wantIsActive   bool
+		wantErr        bool
+		mockUpdate     error
+		mockFindOne    error
+	}{
+		{
+			name: "Error Convert object id hex",
+			args: args{
+				ctx: context.TODO(),
+				id:  "asdfasd",
+			},
+			wantErr:        true,
+			wantIsActive:   false,
+			wantIdAffected: "",
+		},
+		{
+			name: "Error Update Data",
+			args: args{
+				ctx: context.TODO(),
+				id:  "651fb48744d0b172ae3ff0fa",
+			},
+			wantErr:        true,
+			wantIsActive:   false,
+			wantIdAffected: "",
+			mockUpdate:     errors.New(internal.ErrorInternalServer.String()),
+		},
+		{
+			name: "Error Update Data no modify",
+			args: args{
+				ctx: context.TODO(),
+				id:  "651fb48744d0b172ae3ff0fa",
+			},
+			wantErr:        true,
+			wantIsActive:   false,
+			wantIdAffected: "",
+			mockUpdate:     errors.New(internal.ErrNoModifyUpdate.String()),
+		},
+		{
+			name: "Error Fetch one",
+			args: args{
+				ctx: context.TODO(),
+				id:  "651fb48744d0b172ae3ff0fa",
+			},
+			wantErr:        true,
+			wantIsActive:   false,
+			wantIdAffected: "",
+			mockUpdate:     nil,
+			mockFindOne:    errors.New(internal.ErrorInternalServer.String()),
+		},
+		{
+			name: "Happy Flow",
+			args: args{
+				ctx: context.TODO(),
+				id:  "651fb48744d0b172ae3ff0fa",
+			},
+			wantErr:        false,
+			wantIsActive:   false,
+			wantIdAffected: "000000000000000000000000",
+			mockUpdate:     nil,
+			mockFindOne:    nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			u := &companyUseCase{}
+			mockRepo := new(mocks.ICompanyRepository)
+			mockRepo.On("Update", mock.Anything, mock.Anything, mock.Anything).Return(tt.mockUpdate)
+			mockRepo.On("FetchOne", mock.Anything, mock.Anything, mock.Anything).Return(tt.mockFindOne)
+			u.CompanyRepository = mockRepo
+
+			gotIdAffected, gotIsActive, err := u.UpdateCompanyStatusActive(tt.args.ctx, tt.args.id)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("UpdateCompanyStatusActive() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if gotIdAffected != tt.wantIdAffected {
+				t.Errorf("UpdateCompanyStatusActive() gotIdAffected = %v, want %v", gotIdAffected, tt.wantIdAffected)
+			}
+			if gotIsActive != tt.wantIsActive {
+				t.Errorf("UpdateCompanyStatusActive() gotIsActive = %v, want %v", gotIsActive, tt.wantIsActive)
+			}
+		})
+	}
+}
+
+func TestNewCompanyUseCase(t *testing.T) {
+	type args struct {
+		companyRepository repositories.ICompanyRepository
+	}
+	tests := []struct {
+		name string
+		args args
+		want ICompanyUseCase
+	}{
+		{
+			name: "initial company usecase",
+			args: args{},
+			want: &companyUseCase{},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewCompanyUseCase(tt.args.companyRepository); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewCompanyUseCase() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

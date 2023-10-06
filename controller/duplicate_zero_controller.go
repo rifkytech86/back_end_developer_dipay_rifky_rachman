@@ -17,6 +17,7 @@ type duplicateZeroController struct {
 	Validator      validations.IValidator
 }
 
+//go:generate mockery --name IDuplicateZeroController
 type IDuplicateZeroController interface {
 	DuplicateZero(ctx echo.Context) error
 }

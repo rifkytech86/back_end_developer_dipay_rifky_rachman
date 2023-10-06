@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/dipay/internal/db"
 	"github.com/dipay/model"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type userAdminRepository struct {
@@ -11,8 +12,10 @@ type userAdminRepository struct {
 	UserAdminModel model.IUserAdmin
 }
 
+//go:generate mockery --name IUserAdminRepository
 type IUserAdminRepository interface {
 	Fetch(ctx context.Context, filter interface{}, result interface{}) error
+	Create(ctx context.Context, model interface{}) (*primitive.ObjectID, error)
 }
 
 func NewUserAdminRepository(mongoDatabase db.Database, userAdminModel model.IUserAdmin) IUserAdminRepository {
@@ -31,4 +34,15 @@ func (u *userAdminRepository) Fetch(ctx context.Context, filter interface{}, res
 	}
 
 	return nil
+}
+
+func (u *userAdminRepository) Create(ctx context.Context, model interface{}) (*primitive.ObjectID, error) {
+	companyTable := u.UserAdminModel.GetTableName()
+	collection := u.MongoDatabase.Collection(companyTable)
+	resLastInsertedID, err := collection.InsertOne(ctx, model)
+	if err != nil {
+		return nil, err
+	}
+	lastInsertID := resLastInsertedID.(primitive.ObjectID)
+	return &lastInsertID, nil
 }

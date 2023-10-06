@@ -12,6 +12,7 @@ type countriesRepository struct {
 	exAPIGetCountry string
 }
 
+//go:generate mockery --name ICountriesRepository
 type ICountriesRepository interface {
 	GetCountries(ctx context.Context) ([]CountriesPayload, error)
 }

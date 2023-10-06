@@ -13,7 +13,7 @@ func (h *MyHandler) EmployeeHandler() controller.IEmployeeController {
 	employeeRepository := repositories.NewEmployeeRepository(h.Application.MongoDBClient, table)
 	companyRepository := repositories.NewCompanyRepository(h.Application.MongoDBClient, tableCompany)
 
-	employeeUseCase := usecase.NewEmployeeUseCase(employeeRepository, companyRepository, h.Application.JWT)
+	employeeUseCase := usecase.NewEmployeeUseCase(employeeRepository, companyRepository)
 	employeeController := controller.NewEmployeeController(employeeUseCase, h.Application.ENV.ContextTimeOut, h.Application.Validator)
 	return employeeController
 }

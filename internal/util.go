@@ -1,7 +1,5 @@
 package internal
 
-import "github.com/stretchr/testify/mock"
-
 func CheckDuplicateZero(dataN []int32) []int32 {
 	total := len(dataN)
 	numZeros := 0
@@ -23,10 +21,4 @@ func CheckDuplicateZero(dataN []int32) []int32 {
 	}
 
 	return dataN
-}
-
-func GenerateMock(param int) func() interface{} {
-	return func() interface{} {
-		return mock.Anything
-	}
 }

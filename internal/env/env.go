@@ -12,6 +12,7 @@ type ENV struct {
 	DBMaxIdleConnection int    `mapstructure:"DB_MAX_IDLE_CONNECTION"`
 	ContextTimeOut      int    `mapstructure:"CONTEXT_TIMEOUT"`
 	ExpiredAuthTime     int    `mapstructure:"EXPIRED_AUTH_TIME"`
+	ExAPICountries      string `mapstructure:"EXTERNAL_API_COUNTRIES"`
 }
 
 func NewENV() *ENV {

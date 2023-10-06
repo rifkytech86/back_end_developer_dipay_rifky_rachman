@@ -5,7 +5,6 @@ import (
 	"errors"
 	"github.com/dipay/api"
 	"github.com/dipay/internal"
-	"github.com/dipay/internal/jwt"
 	"github.com/dipay/model"
 	"github.com/dipay/repositories"
 	"go.mongodb.org/mongo-driver/bson"
@@ -16,7 +15,6 @@ import (
 
 type companyUseCase struct {
 	CompanyRepository repositories.ICompanyRepository
-	JWT               jwt.IJWTRSAToken
 }
 
 type ICompanyUseCase interface {
@@ -25,10 +23,9 @@ type ICompanyUseCase interface {
 	UpdateCompanyStatusActive(ctx context.Context, id string) (idAffected string, isActive bool, err error)
 }
 
-func NewCompanyUseCase(companyRepository repositories.ICompanyRepository, jwt jwt.IJWTRSAToken) ICompanyUseCase {
+func NewCompanyUseCase(companyRepository repositories.ICompanyRepository) ICompanyUseCase {
 	return &companyUseCase{
 		CompanyRepository: companyRepository,
-		JWT:               jwt,
 	}
 }
 

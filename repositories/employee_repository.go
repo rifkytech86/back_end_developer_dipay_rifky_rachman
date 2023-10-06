@@ -5,32 +5,32 @@ import (
 	"errors"
 	"fmt"
 	"github.com/dipay/internal"
+	"github.com/dipay/internal/db"
 	"github.com/dipay/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type employeeRepository struct {
-	MongoDatabase *mongo.Database
+	MongoDatabase db.Database
 	EmployeeModel model.IEmployees
 }
 
 type IEmployeeRepository interface {
-	Fetch(ctx context.Context, filter interface{}, result interface{}) ([]*model.Employees, error)
+	Fetch(ctx context.Context, filter interface{}) ([]*model.Employees, error)
 	FetchOne(ctx context.Context, filter interface{}, result interface{}) error
 	Create(ctx context.Context, model interface{}) (*primitive.ObjectID, error)
 	Update(ctx context.Context, filter interface{}, update interface{}) error
 	Delete(ctx context.Context, filter interface{}) error
 }
 
-func NewEmployeeRepository(mongoDatabase *mongo.Database, employeeModel model.IEmployees) IEmployeeRepository {
+func NewEmployeeRepository(mongoDatabase db.Database, employeeModel model.IEmployees) IEmployeeRepository {
 	return &employeeRepository{
 		MongoDatabase: mongoDatabase,
 		EmployeeModel: employeeModel,
 	}
 }
 
-func (e *employeeRepository) Fetch(ctx context.Context, filter interface{}, result interface{}) ([]*model.Employees, error) {
+func (e *employeeRepository) Fetch(ctx context.Context, filter interface{}) ([]*model.Employees, error) {
 	companyTable := e.EmployeeModel.GetTableName()
 	collection := e.MongoDatabase.Collection(companyTable)
 	cur, err := collection.Find(ctx, filter)
@@ -65,11 +65,11 @@ func (e *employeeRepository) Create(ctx context.Context, model interface{}) (*pr
 	companyTable := e.EmployeeModel.GetTableName()
 	fmt.Println(companyTable)
 	collection := e.MongoDatabase.Collection(companyTable)
-	res, err := collection.InsertOne(ctx, model)
+	resLastInsertedID, err := collection.InsertOne(ctx, model)
 	if err != nil {
 		return nil, err
 	}
-	lastInsertID := res.InsertedID.(primitive.ObjectID)
+	lastInsertID := resLastInsertedID.(primitive.ObjectID)
 	return &lastInsertID, nil
 }
 

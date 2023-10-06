@@ -13,6 +13,7 @@ type clientHttp struct {
 	client *gobreaker.CircuitBreaker
 }
 
+//go:generate mockery --name IClientHttp
 type IClientHttp interface {
 	Get(url string) ([]byte, error)
 	Post(url string, body []byte) ([]byte, error)

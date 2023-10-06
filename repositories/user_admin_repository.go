@@ -2,12 +2,12 @@ package repositories
 
 import (
 	"context"
+	"github.com/dipay/internal/db"
 	"github.com/dipay/model"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type userAdminRepository struct {
-	MongoDatabase  *mongo.Database
+	MongoDatabase  db.Database
 	UserAdminModel model.IUserAdmin
 }
 
@@ -15,7 +15,7 @@ type IUserAdminRepository interface {
 	Fetch(ctx context.Context, filter interface{}, result interface{}) error
 }
 
-func NewUserAdminRepository(mongoDatabase *mongo.Database, userAdminModel model.IUserAdmin) IUserAdminRepository {
+func NewUserAdminRepository(mongoDatabase db.Database, userAdminModel model.IUserAdmin) IUserAdminRepository {
 	return &userAdminRepository{
 		MongoDatabase:  mongoDatabase,
 		UserAdminModel: userAdminModel,

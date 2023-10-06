@@ -9,7 +9,7 @@ import (
 
 func (h *MyHandler) CountriesHandler() controller.ICountriesController {
 	initialHttpClient := httpClient.NewClient()
-	countriesRepository := repositories.NewCountriesRepository(initialHttpClient)
+	countriesRepository := repositories.NewCountriesRepository(initialHttpClient, h.Application.ENV.ExAPICountries)
 	countriesUseCase := usecase.NewCountriesUseCase(countriesRepository)
 	countriesController := controller.NewCountriesController(countriesUseCase, h.Application.ENV.ContextTimeOut)
 	return countriesController

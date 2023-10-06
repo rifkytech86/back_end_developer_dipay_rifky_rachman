@@ -4,16 +4,17 @@ import (
 	"context"
 	"errors"
 	"github.com/dipay/internal"
+	"github.com/dipay/internal/db"
 	"github.com/dipay/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type companyRepository struct {
-	MongoDatabase  *mongo.Database
+	MongoDatabase  db.Database
 	CompaniesModel model.ICompanies
 }
 
+//go:generate mockery --name ICompanyRepository
 type ICompanyRepository interface {
 	FetchOne(ctx context.Context, filter interface{}, result interface{}) error
 	Fetch(ctx context.Context, filter interface{}) ([]*model.Companies, error)
@@ -21,7 +22,7 @@ type ICompanyRepository interface {
 	Update(ctx context.Context, filter interface{}, update interface{}) error
 }
 
-func NewCompanyRepository(mongoDatabase *mongo.Database, companiesModel model.ICompanies) ICompanyRepository {
+func NewCompanyRepository(mongoDatabase db.Database, companiesModel model.ICompanies) ICompanyRepository {
 	return &companyRepository{
 		MongoDatabase:  mongoDatabase,
 		CompaniesModel: companiesModel,
@@ -61,11 +62,11 @@ func (c *companyRepository) Fetch(ctx context.Context, filter interface{}) ([]*m
 func (c *companyRepository) Create(ctx context.Context, model interface{}) (*primitive.ObjectID, error) {
 	companyTable := c.CompaniesModel.GetTableName()
 	collection := c.MongoDatabase.Collection(companyTable)
-	res, err := collection.InsertOne(ctx, model)
+	resLastInsertedID, err := collection.InsertOne(ctx, model)
 	if err != nil {
 		return nil, err
 	}
-	lastInsertID := res.InsertedID.(primitive.ObjectID)
+	lastInsertID := resLastInsertedID.(primitive.ObjectID)
 	return &lastInsertID, nil
 }
 

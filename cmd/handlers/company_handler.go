@@ -10,7 +10,7 @@ import (
 func (h *MyHandler) CompanyHandler() controller.ICompanyController {
 	table := model.NewCompanies()
 	companyRepository := repositories.NewCompanyRepository(h.Application.MongoDBClient, table)
-	companyUseCase := usecase.NewCompanyUseCase(companyRepository, h.Application.JWT)
+	companyUseCase := usecase.NewCompanyUseCase(companyRepository)
 	companyController := controller.NewCompanyController(companyUseCase, h.Application.ENV.ContextTimeOut, h.Application.Validator)
 	return companyController
 }

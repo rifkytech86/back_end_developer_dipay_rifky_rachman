@@ -3,7 +3,6 @@ module github.com/dipay
 go 1.21.1
 
 require (
-	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5
 	github.com/getkin/kin-openapi v0.118.0
 	github.com/go-playground/validator/v10 v10.15.5
 	github.com/golang-jwt/jwt v3.2.2+incompatible
@@ -12,11 +11,13 @@ require (
 	github.com/oapi-codegen/runtime v1.0.0
 	github.com/sony/gobreaker v0.5.0
 	github.com/spf13/viper v1.16.0
+	github.com/stretchr/testify v1.8.4
 	go.mongodb.org/mongo-driver v1.12.1
 )
 
 require (
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
@@ -39,11 +40,12 @@ require (
 	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
 	github.com/pelletier/go-toml/v2 v2.0.9 // indirect
 	github.com/perimeterx/marshmallow v1.1.4 // indirect
-	github.com/smartystreets/goconvey v1.8.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect

@@ -12,6 +12,7 @@ type mongoDBClient struct {
 	databaseName string
 }
 
+//go:generate mockery --name IMongoDBClient
 type IMongoDBClient interface {
 	InitConnection() (*mongo.Client, error)
 	PingConnection(client *mongo.Client) error

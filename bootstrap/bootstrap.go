@@ -1,17 +1,18 @@
 package bootstrap
 
 import (
+	"context"
 	"github.com/dipay/commons"
 	"github.com/dipay/internal"
 	"github.com/dipay/internal/db"
 	"github.com/dipay/internal/env"
 	"github.com/dipay/internal/jwt"
 	"github.com/dipay/internal/validations"
-	"go.mongodb.org/mongo-driver/mongo"
+	"time"
 )
 
 type Application struct {
-	MongoDBClient *mongo.Database
+	MongoDBClient db.Database
 	ENV           *env.ENV
 	Validator     validations.IValidator
 	JWT           jwt.IJWTRSAToken
@@ -30,20 +31,41 @@ func NewInitializeBootstrap() Application {
 	return app
 }
 
-func initialMongoDB(databaseURL string, databaseName string) *mongo.Database {
-	initialConnection := db.NewMongoDB(databaseURL, databaseName)
-	mongoClient, err := initialConnection.InitConnection()
-	if err != nil {
-		panic("error mongo connection")
-	}
-	err = initialConnection.PingConnection(mongoClient)
+func initialMongoDB(databaseURL string, databaseName string) db.Database {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	//initialConnection := db.NewMongoDB(databaseURL, databaseName)
+
+	mongoClient, err := db.NewClient(databaseURL)
 	if err != nil {
 		panic("error mongo connection")
 	}
 
-	handleMongoDB := initialConnection.SetDatabase(mongoClient, databaseName)
+	err = mongoClient.Ping(ctx)
+	if err != nil {
+		panic("error mongo connection")
+	}
 
-	return handleMongoDB
+	client := mongoClient.Database(databaseName)
+
+	//err = mongoClient.Ping(context.TODO())
+	//if err != nil {
+	//	panic("error ping mongo")
+	//}
+	//
+	//mongoClient, err := initialConnection.InitConnection()
+	//if err != nil {
+	//	panic("error mongo connection")
+	//}
+	//err = initialConnection.PingConnection(mongoClient)
+	//if err != nil {
+	//	panic("error mongo connection")
+	//}
+	//
+	//handleMongoDB := initialConnection.SetDatabase(mongoClient, databaseName)
+
+	return client
 }
 
 func registerValidatorCustom(validator validations.IValidator) {

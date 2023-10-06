@@ -15,6 +15,7 @@ type Companies struct {
 	UpdatedAt       time.Time          `bson:"updated_at"`
 }
 
+//go:generate mockery --name ICompanies
 type ICompanies interface {
 	GetTableName() string
 }

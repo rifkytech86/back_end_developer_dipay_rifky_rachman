@@ -99,8 +99,7 @@ func (e *employeeUserAdmin) GetEmployeeByID(ctx context.Context, employeeID stri
 }
 
 func (e *employeeUserAdmin) GetEmployeeByCompanyID(ctx context.Context, companyID string) ([]*model.Employees, error) {
-	var employee model.Employees
-	listEmployee, err := e.EmployeeRepository.Fetch(ctx, bson.M{"company_id": companyID}, &employee)
+	listEmployee, err := e.EmployeeRepository.Fetch(ctx, bson.M{"company_id": companyID})
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
 			return nil, errors.New(internal.ErrorInvalidDataNotFound.String())

@@ -163,4 +163,4 @@ Note:
      - telephone_number will set  **UNIQUE**
    
 2. Login
-   - once data not found on database, service will create user on table/document user_admin
+   - once data not found on database, service will create new user on table/document admis

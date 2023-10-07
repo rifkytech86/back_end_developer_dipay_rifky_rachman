@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/dipay/api"
 	"github.com/dipay/internal"
 	"github.com/dipay/model"
@@ -72,11 +73,20 @@ func (e *employeeUserAdmin) AddEmployee(ctx context.Context, companyId string, r
 		}
 		return "", "", errors.New(internal.ErrorInternalServer.String())
 	}
+
+	// NOte this is only for make sure data correctly, for Assignment test only
 	var employee model.Employees
 	err = e.EmployeeRepository.FetchOne(ctx, bson.M{"_id": lastInsertedID}, &employee)
 	if err != nil {
 		return "", "", errors.New(internal.ErrorInternalServer.String())
 	}
+
+	// send email
+	err = e.EmployeeRepository.SendEmail(ctx, employee.Email)
+	if err != nil {
+		fmt.Println("warning send email failed")
+	}
+
 	return employee.ID.Hex(), employee.CompanyID, nil
 }
 

@@ -86,6 +86,20 @@ func (_m *IEmployeeRepository) FetchOne(ctx context.Context, filter interface{},
 	return r0
 }
 
+// SendEmail provides a mock function with given fields: ctx, email
+func (_m *IEmployeeRepository) SendEmail(ctx context.Context, email string) error {
+	ret := _m.Called(ctx, email)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = rf(ctx, email)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // Update provides a mock function with given fields: ctx, filter, update
 func (_m *IEmployeeRepository) Update(ctx context.Context, filter interface{}, update interface{}) error {
 	ret := _m.Called(ctx, filter, update)

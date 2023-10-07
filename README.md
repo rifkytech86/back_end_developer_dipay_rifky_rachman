@@ -6,8 +6,10 @@ To run this project you need to have the following installed:
 
 1. [Go](https://golang.org/doc/install) version 1.20
 2. Install Mongo DB [mongodb](https://www.mongodb.com/docs/manual/installation/#mongodb-installation-tutorials) on local machine
-5. [GNU Make](https://www.gnu.org/software/make/)
-6. [oapi-codegen](https://github.com/deepmap/oapi-codegen)
+3. [GNU Make](https://www.gnu.org/software/make/)
+4. [oapi-codegen](https://github.com/deepmap/oapi-codegen)
+5. [Docker](https://docs.docker.com/get-docker/) version 20
+6. [Docker Compose](https://docs.docker.com/compose/install/) version 1.29
    Install the latest version with:
     ```
     go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@latest
@@ -32,13 +34,12 @@ Prerequisite
 
 How To Start:
 
-Service:
+Service [Application]:
 1. Run Service with Binary
     ```
       make all start-binary
     ```
    service will Run with port as define on Prerequisite
-
 
 
 2. Run with Non Binary
@@ -47,6 +48,18 @@ Service:
     ```
    service will Run with port as define on Prerequisite
 
+Service [Send Email]:
+1. Run Service with Binary
+    ```
+      cd dipayemail
+      go mod tidy
+      go mod vendor
+    ```
+2. Run service on docker with kafka
+    ```
+      cd dipayemail
+      docker-compose up -d 
+    ```
 
 Unit Test:
 1. Run Unit test
@@ -59,6 +72,11 @@ Unit Test:
     ```
    <img src="./readme/coverage.png" height="300">
 
+### Default Port
+| Folder              | Port                                           |
+|---------------------|------------------------------------------------|
+| Service Application | 7000                                           |
+| Service Email       | 6000                                           |
 
 
 ### The Complete Project Folder Structure

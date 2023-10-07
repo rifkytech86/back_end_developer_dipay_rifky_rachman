@@ -167,7 +167,9 @@ func Test_employeeUserAdmin_AddEmployee(t *testing.T) {
 			mockEmployeeRepo := new(mocks.IEmployeeRepository)
 			mockEmployeeRepo.On("Create", mock.Anything, mock.Anything).Return(tt.mockCreate.id, tt.mockCreate.err)
 			mockEmployeeRepo.On("FetchOne", mock.Anything, mock.Anything, mock.Anything).Return(tt.mockFetchOneEmployee)
+			mockEmployeeRepo.On("SendEmail", mock.Anything, mock.Anything).Return(nil)
 			e.EmployeeRepository = mockEmployeeRepo
+
 			got, got1, err := e.AddEmployee(tt.args.ctx, tt.args.companyId, tt.args.req)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("AddEmployee() error = %v, wantErr %v", err, tt.wantErr)

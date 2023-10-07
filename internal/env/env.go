@@ -14,6 +14,7 @@ type ENV struct {
 	ExpiredAuthTime     int    `mapstructure:"EXPIRED_AUTH_TIME"`
 	ExAPICountries      string `mapstructure:"EXTERNAL_API_COUNTRIES"`
 	HTTPAddress         string `mapstructure:"HTTP_ADDRESS"`
+	EmailService        string `mapstructure:"EMAIL_SERVICE"`
 }
 
 func NewENV() *ENV {

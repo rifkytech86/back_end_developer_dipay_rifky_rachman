@@ -2,16 +2,21 @@ package repositories
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/dipay/internal"
 	"github.com/dipay/internal/db"
 	"github.com/dipay/model"
+	"github.com/dipay/pkg/httpClient"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type employeeRepository struct {
 	MongoDatabase db.Database
 	EmployeeModel model.IEmployees
+	clientHttp    httpClient.IClientHttp
+	hostEmail     string
 }
 
 //go:generate mockery --name IEmployeeRepository
@@ -21,12 +26,15 @@ type IEmployeeRepository interface {
 	Create(ctx context.Context, model interface{}) (*primitive.ObjectID, error)
 	Update(ctx context.Context, filter interface{}, update interface{}) error
 	Delete(ctx context.Context, filter interface{}) error
+	SendEmail(ctx context.Context, email string) error
 }
 
-func NewEmployeeRepository(mongoDatabase db.Database, employeeModel model.IEmployees) IEmployeeRepository {
+func NewEmployeeRepository(mongoDatabase db.Database, employeeModel model.IEmployees, client httpClient.IClientHttp, hostEmail string) IEmployeeRepository {
 	return &employeeRepository{
 		MongoDatabase: mongoDatabase,
 		EmployeeModel: employeeModel,
+		clientHttp:    client,
+		hostEmail:     hostEmail,
 	}
 }
 
@@ -94,5 +102,22 @@ func (e *employeeRepository) Delete(ctx context.Context, filter interface{}) err
 		return err
 	}
 
+	return nil
+}
+
+func (e *employeeRepository) SendEmail(ctx context.Context, email string) error {
+	data := map[string]string{
+		"email": email,
+	}
+	fmt.Println("send email", email)
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	_, err = e.clientHttp.Post(e.hostEmail, jsonData)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
 	return nil
 }

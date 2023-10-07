@@ -32,7 +32,7 @@ start-non-binary:
 
 generated: cmd/dipay.yml
 	@echo "Generating files..."
-	oapi-codegen -package=api -generate "types,server,spec,swaggerui" cmd/dipay.yml > api/api.gen.go
+	oapi-codegen -package=api -generate "types,server,spec" cmd/dipay.yml > api/api.gen.go
 
 
 generate_mocks: $(INTERFACES_GEN_GO_FILES)

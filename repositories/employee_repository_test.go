@@ -8,6 +8,7 @@ import (
 	dbMock "github.com/dipay/internal/db/mocks"
 	"github.com/dipay/model"
 	"github.com/dipay/model/mocks"
+	"github.com/dipay/pkg/httpClient"
 	"github.com/stretchr/testify/mock"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -402,6 +403,8 @@ func TestNewEmployeeRepository(t *testing.T) {
 	type args struct {
 		mongoDatabase db.Database
 		employeeModel model.IEmployees
+		clientHttp    httpClient.IClientHttp
+		hostEmail     string
 	}
 	tests := []struct {
 		name string
@@ -416,7 +419,7 @@ func TestNewEmployeeRepository(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewEmployeeRepository(tt.args.mongoDatabase, tt.args.employeeModel); !reflect.DeepEqual(got, tt.want) {
+			if got := NewEmployeeRepository(tt.args.mongoDatabase, tt.args.employeeModel, tt.args.clientHttp, tt.args.hostEmail); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("NewEmployeeRepository() = %v, want %v", got, tt.want)
 			}
 		})

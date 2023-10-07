@@ -1,0 +1,63 @@
+version: '3.8'
+
+networks:
+  dipayNetWork:
+    driver: bridge
+
+services:
+  zookeeper:
+    container_name: "zookeeper"
+    image: confluentinc/cp-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - dipayNetWork
+  kafka:
+    image: confluentinc/cp-kafka
+    container_name: "kafka"
+    ports:
+      - "9092:9092"
+    expose:
+      - "9093"
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT_HOST://host.docker.internal:29092
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - zookeeper
+    networks:
+      - dipayNetWork
+
+  service-b:
+    build: ./service-b
+    container_name: "serviceb"
+    ports:
+      - "6000:6000"
+    depends_on:
+      - kafka
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/database?sslmode=disable
+      - CONTEXT_TIMEOUT=20
+      - MAX_OPEN_CONNECTION=10
+      - MAX_IDLE_CONNECTION=5
+      - EXPIRED_AUTH_TIME=1
+      - KAFKA_BROKER=host.docker.internal:9092
+      - KAFKA_TOPIC=email-topic
+      - EMAIL_HOST=<your_email_host>
+      - EMAIL_PORT=<your_email_port>
+      - EMAIL_USERNAME=<your_email_username>
+      - EMAIL_PASSWORD=<your_email_password>
+      - EMAIL_FROM=<sender_email@example.com>
+      - EMAIL_TO=<receiver_email@example.com>
+      - SERVICE_B_PORT=6000
+    networks:
+      - dipayNetWork

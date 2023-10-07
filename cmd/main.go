@@ -16,6 +16,9 @@ import (
 
 func main() {
 	e := echo.New()
+
+	e.Static("/swagger", "cmd")
+
 	e.Group("/api")
 	// Middleware
 	e.Use(middleware.Logger())

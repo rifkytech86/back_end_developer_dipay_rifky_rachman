@@ -156,6 +156,7 @@ Unit Test:
 Flow Rule Application 
 
 Note:
+0. once we needed isolate contract, if craete new endpoint add firstly on dipay.yml 
 1.  ```make all``` on script we will  execute migration table: admin, companies, employees
    - admins
      - email will set **UNIQUE**
@@ -172,6 +173,7 @@ Note:
      
    but i already put example so for development can use it
 4. I already put postman collection as well ```DIPAY.postman_collection.json```
+
 
 
 <img src="./readme/postman.png" height="300">

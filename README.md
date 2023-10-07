@@ -131,6 +131,8 @@ Unit Test:
 ├── .env
 ├── go.mod
 ├── go.sum
+├── private_key.pem
+├── public_key.pem
 └── DIPAY.postman_collection.json
 ```
 
@@ -163,4 +165,23 @@ Note:
      - telephone_number will set  **UNIQUE**
    
 2. Login
-   - once data not found on database, service will create new user on table/document admis
+   - once data not found on database, service will create new user on table/document admins
+3. JWT 
+   - since we using JWT RSA so make sure 
+     - private_key.pem +  public_key.pem
+     
+   but i already put example so for development can use it
+4. I already put postman collection as well ```DIPAY.postman_collection.json```
+
+
+<img src="./readme/postman.png" height="300">
+
+Thank you for considering my application for the Backend Developer position. I'm excited about the opportunity to join your team.
+
+Cheers Happy Coding :) 
+
+Aplicant
+
+| Name          | Email                 |
+|---------------|-----------------------|
+| Rifky Rachman |rifky.rachman@gmail.com|

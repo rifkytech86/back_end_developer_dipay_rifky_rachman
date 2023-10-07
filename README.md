@@ -154,7 +154,7 @@ Unit Test:
 Flow Rule Application 
 
 Note:
-1.  ```make all``` on script we will  execute migration table: user_admin
+1.  ```make all``` on script we will  execute migration table: admin, companies, employees
    - admins
      - email will set **UNIQUE**
    - companies

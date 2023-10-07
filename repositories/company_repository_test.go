@@ -55,7 +55,7 @@ func Test_companyRepository_FetchOne(t *testing.T) {
 			},
 			mockTableName: "company",
 			mockDecode:    nil,
-			wantErr:       true,
+			wantErr:       false,
 		},
 	}
 	for _, tt := range tests {

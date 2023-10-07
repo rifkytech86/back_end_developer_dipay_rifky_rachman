@@ -20,7 +20,7 @@ type ICompanies interface {
 	GetTableName() string
 }
 
-func NewCompanies() IUserAdmin {
+func NewCompanies() ICompanies {
 	return &Companies{}
 }
 

@@ -16,7 +16,7 @@ var (
 	ErrorInvalidRequestUserName          = regErrorForFE(400001, "invalid request, username is required, or character more then 30")
 	ErrorInvalidRequestPassword          = regErrorForFE(400002, "invalid request, password is required, or character more then 30")
 	ErrorInvalidRequestCompanyName       = regErrorForFE(400002, "invalid request, company name is required, or character less 3 and more then 30")
-	ErrorInvalidRequestPhoneNumber       = regErrorForFE(400002, "invalid request, phone number is required, or character less 8 and more then 16")
+	ErrorInvalidRequestPhoneNumber       = regErrorForFE(400002, "invalid request, phone number is required, or character less 8 and more then 16 or format should a lead +62 or lead 0")
 	ErrorInvalidRequestAddress           = regErrorForFE(400002, "invalid request, address is required, or character less 10 and more then 50")
 	ErrorInvalidRequestJobTitle          = regErrorForFE(400002, "invalid request, job title is required, or job title not either manager, director, staff")
 	ErrorInvalidRequestEmail             = regErrorForFE(400002, "invalid request, email is required, or wrong format email, or character less 5 or more then 255")

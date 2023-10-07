@@ -13,7 +13,7 @@ type ENV struct {
 	ContextTimeOut      int    `mapstructure:"CONTEXT_TIMEOUT"`
 	ExpiredAuthTime     int    `mapstructure:"EXPIRED_AUTH_TIME"`
 	ExAPICountries      string `mapstructure:"EXTERNAL_API_COUNTRIES"`
-	SecretEndCrypt      string `mapstructure:"SECRET_END_CRYPT"`
+	HTTPAddress         string `mapstructure:"HTTP_ADDRESS"`
 }
 
 func NewENV() *ENV {

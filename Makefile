@@ -1,18 +1,34 @@
-.PHONY: clean all init generate generate_mocks test
+.PHONY: clean all init  generate_mocks test, migrate, start, start-non-binary
 
-all: build/main
+# Variables
+DB_URI := mongodb://localhost:27017
+DB_NAME := diPayDB
 
-build/main: cmd/main.go generated
+all: init migrate build
+
+
+build: cmd/main.go  generated
 	@echo "Building..."
 	go build -o $@ $<
 
-
-init: generate
+init:
 	go mod tidy
 	go mod vendor
 
+migrate:
+	go run cmd/main.go migrate
+
 test:
 	go test -short -coverprofile coverage.out -v ./...
+
+coverage: test
+	go tool cover -func=coverage.out
+
+start-binary:
+	./build
+
+start-non-binary:
+	go run cmd/main.go
 
 generated: cmd/dipay.yml
 	@echo "Generating files..."

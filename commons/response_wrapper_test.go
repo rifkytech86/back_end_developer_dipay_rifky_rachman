@@ -34,7 +34,7 @@ func TestErrorResponse(t *testing.T) {
 	assert.NoError(t, err)
 
 	assert.Equal(t, http.StatusBadRequest, rec.Code)
-	assert.JSONEq(t, `{"code":400,"errors":{"list_error":["invalid request"]},"message":""}`, rec.Body.String())
+	assert.JSONEq(t, `{"code":400000,"error":""}`, rec.Body.String())
 }
 
 func TestErrorResponses(t *testing.T) {

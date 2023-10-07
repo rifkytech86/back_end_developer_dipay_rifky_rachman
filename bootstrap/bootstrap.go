@@ -39,7 +39,7 @@ func initialMongoDB(databaseURL string, databaseName string) db.Database {
 
 	mongoClient, err := db.NewClient(databaseURL)
 	if err != nil {
-		panic("error mongo connection")
+		panic("error mongo conrun nection")
 	}
 
 	err = mongoClient.Ping(ctx)
@@ -48,22 +48,6 @@ func initialMongoDB(databaseURL string, databaseName string) db.Database {
 	}
 
 	client := mongoClient.Database(databaseName)
-
-	//err = mongoClient.Ping(context.TODO())
-	//if err != nil {
-	//	panic("error ping mongo")
-	//}
-	//
-	//mongoClient, err := initialConnection.InitConnection()
-	//if err != nil {
-	//	panic("error mongo connection")
-	//}
-	//err = initialConnection.PingConnection(mongoClient)
-	//if err != nil {
-	//	panic("error mongo connection")
-	//}
-	//
-	//handleMongoDB := initialConnection.SetDatabase(mongoClient, databaseName)
 
 	return client
 }

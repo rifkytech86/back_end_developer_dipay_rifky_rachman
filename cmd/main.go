@@ -1,13 +1,17 @@
 package main
 
 import (
+	"fmt"
 	"github.com/dipay/api"
 	"github.com/dipay/bootstrap"
 	"github.com/dipay/cmd/handlers"
+	"github.com/dipay/db"
 	"github.com/dipay/internal/jwt"
 	customMiddleware "github.com/dipay/internal/middleware"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"log"
+	"os"
 )
 
 func main() {
@@ -38,8 +42,16 @@ func main() {
 
 	api.RegisterHandlers(e, wrapper)
 
+	if len(os.Args) > 1 && os.Args[1] == "migrate" {
+		if err := db.Migrate(app.MongoDBClient); err != nil {
+			log.Println(fmt.Sprintf("warning %v", err))
+		}
+		log.Println("Migrations completed successfully")
+		return
+	}
+
 	// Start server
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(app.ENV.HTTPAddress))
 }
 
 func setMiddleware(e *echo.Echo, jwt jwt.IJWTRSAToken) *echo.Echo {

@@ -31,6 +31,7 @@ type Collection interface {
 	Aggregate(context.Context, interface{}) (Cursor, error)
 	UpdateOne(context.Context, interface{}, interface{}, ...*options.UpdateOptions) (*mongo.UpdateResult, error)
 	UpdateMany(context.Context, interface{}, interface{}, ...*options.UpdateOptions) (*mongo.UpdateResult, error)
+	CreateOne(ctx context.Context, document mongo.IndexModel) (string, error)
 }
 
 //go:generate mockery --name SingleResult
@@ -152,6 +153,13 @@ func (md *mongoDatabase) Client() Client {
 func (mc *mongoCollection) FindOne(ctx context.Context, filter interface{}) SingleResult {
 	singleResult := mc.coll.FindOne(ctx, filter)
 	return &mongoSingleResult{sr: singleResult}
+}
+func (mc *mongoCollection) CreateOne(ctx context.Context, document mongo.IndexModel) (string, error) {
+	resCreateOne, err := mc.coll.Indexes().CreateOne(ctx, document)
+	if err != nil {
+		return "", err
+	}
+	return resCreateOne, err
 }
 
 func (mc *mongoCollection) UpdateOne(ctx context.Context, filter interface{}, update interface{}, opts ...*options.UpdateOptions) (*mongo.UpdateResult, error) {

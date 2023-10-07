@@ -100,11 +100,26 @@ func ValidatePhoneNumber(fl validator.FieldLevel) bool {
 	if phoneNumber == "" {
 		return false
 	}
-	if len(phoneNumber) < 8 || len(phoneNumber) > 16 {
+
+	if len(phoneNumber) < 2 {
+		return false
+	}
+	minChar := 8
+	maxChar := 16
+	if len(phoneNumber) > 3 && string(phoneNumber[0:3]) == "+62" {
+		minChar = 10
+		maxChar = 18
+	}
+	if len(phoneNumber) < minChar || len(phoneNumber) > maxChar {
 		return false
 	}
 
-	return true
+	return isValidPhoneNumber(phoneNumber)
+}
+
+func isValidPhoneNumber(input string) bool {
+	phoneNumberRegex := regexp.MustCompile(`^(\+62|0)\d+$`)
+	return phoneNumberRegex.MatchString(input)
 }
 
 func ValidateEmail(fl validator.FieldLevel) bool {
@@ -115,19 +130,12 @@ func ValidateEmail(fl validator.FieldLevel) bool {
 	if len(email) < 5 || len(email) > 255 {
 		return false
 	}
-
 	return isValidEmail(email)
 
 }
 
 func isValidEmail(email string) bool {
-	// Regular expression pattern for a simple email validation
-	// This pattern allows for alphanumeric characters, dots, underscores, and hyphens in the local part.
-	// It also allows for a single dot followed by alphanumeric characters in the domain part.
-	// This is a basic validation and may not cover all edge cases.
-	// For more comprehensive validation, you can use a library or a more complex regex pattern.
 	emailRegex := regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
-
 	return emailRegex.MatchString(email)
 }
 

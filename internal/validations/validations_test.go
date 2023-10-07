@@ -78,6 +78,14 @@ func TestValidatorUsername(t *testing.T) {
 
 	errNotEmpty := validate.Struct(userNotEmpty)
 	assert.NoError(t, errNotEmpty)
+
+	userEmptyMaxLimit := User{
+		Username: "companycompanycompanycompanycompanycompanycompanycompanycompanycompany",
+	}
+
+	errEmptyMaxLimit := validate.Struct(userEmptyMaxLimit)
+	assert.Error(t, errEmptyMaxLimit)
+
 }
 
 func TestValidatorAddress(t *testing.T) {
@@ -99,6 +107,12 @@ func TestValidatorAddress(t *testing.T) {
 	}
 	errNotEmpty := validate.Struct(userNotEmpty)
 	assert.NoError(t, errNotEmpty)
+
+	userLessLimit := User{
+		Address: "123",
+	}
+	errLessLimit := validate.Struct(userLessLimit)
+	assert.Error(t, errLessLimit)
 }
 
 func TestValidatorCompanyName(t *testing.T) {
@@ -118,6 +132,12 @@ func TestValidatorCompanyName(t *testing.T) {
 	}
 	errNotEmpty := validate.Struct(companyNotEmpty)
 	assert.NoError(t, errNotEmpty)
+
+	companyLessLimit := Company{
+		Name: "23",
+	}
+	errLessLimit := validate.Struct(companyLessLimit)
+	assert.Error(t, errLessLimit)
 }
 
 func TestValidatePhoneNumber(t *testing.T) {
@@ -131,11 +151,24 @@ func TestValidatePhoneNumber(t *testing.T) {
 	}
 	errEmpty := validate.Struct(phoneEmpty)
 	assert.Error(t, errEmpty)
+	phoneEmpty1 := Phone{
+		Number: "2",
+	}
+	errEmpty1 := validate.Struct(phoneEmpty1)
+	assert.Error(t, errEmpty1)
+
+	phoneEmpty2 := Phone{
+		Number: "+62123456",
+	}
+	errEmpty2 := validate.Struct(phoneEmpty2)
+	assert.Error(t, errEmpty2)
+
 	phoneNotEmpty := Phone{
-		Number: "1234567890",
+		Number: "+621234567890",
 	}
 	errNotEmpty := validate.Struct(phoneNotEmpty)
 	assert.NoError(t, errNotEmpty)
+
 }
 
 func TestValidateEmail(t *testing.T) {
@@ -168,10 +201,27 @@ func TestValidateJobTitle(t *testing.T) {
 	errEmpty := validate.Struct(jobEmpty)
 	assert.Error(t, errEmpty)
 	jobNotEmpty := Job{
-		Title: "Software Engineer",
+		Title: "manager",
 	}
 	errNotEmpty := validate.Struct(jobNotEmpty)
 	assert.NoError(t, errNotEmpty)
+	jobNotEmptyDir := Job{
+		Title: "director",
+	}
+	errNotEmptyDir := validate.Struct(jobNotEmptyDir)
+	assert.NoError(t, errNotEmptyDir)
+
+	jobNotEmptyStaff := Job{
+		Title: "staff",
+	}
+	errNotEmptyStaff := validate.Struct(jobNotEmptyStaff)
+	assert.NoError(t, errNotEmptyStaff)
+
+	jobNotEmptyUnKnown := Job{
+		Title: "staffxxx",
+	}
+	errNotEmptyUnknown := validate.Struct(jobNotEmptyUnKnown)
+	assert.Error(t, errNotEmptyUnknown)
 }
 
 func TestValidateEmployee(t *testing.T) {
@@ -218,6 +268,8 @@ func TestGetCustomMessage(t *testing.T) {
 	assert.Equal(t, "invalid request username", usernameMessage)
 	passwordMessage := GetCustomMessage("ValidPassword", "password")
 	assert.Equal(t, "invalid request password", passwordMessage)
+	validateCompanyName := GetCustomMessage("ValidatorCompanyName", "password")
+	assert.Equal(t, "invalid request password", validateCompanyName)
 	otherMessage := GetCustomMessage("OtherError", "field")
 	assert.Equal(t, "invalid request field", otherMessage)
 }

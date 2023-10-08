@@ -8,12 +8,13 @@ To run this project you need to have the following installed:
 2. Install Mongo DB [mongodb](https://www.mongodb.com/docs/manual/installation/#mongodb-installation-tutorials) on local machine
 3. [GNU Make](https://www.gnu.org/software/make/)
 4. [oapi-codegen](https://github.com/deepmap/oapi-codegen)
-5. [Docker](https://docs.docker.com/get-docker/) version 20
-6. [Docker Compose](https://docs.docker.com/compose/install/) version 1.29
    Install the latest version with:
     ```
     go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@latest
     ```
+5. [Docker](https://docs.docker.com/get-docker/) version 20
+6. [Docker Compose](https://docs.docker.com/compose/install/) version 1.29
+
 6. [mock](https://github.com/golang/mock)
 
     Install the latest version with:
@@ -51,15 +52,24 @@ Service [Application]:
 Service [Send Email]:
 1. Run Service with Binary
     ```
-      cd dipayemail
+      cd dipayemail/service-b
       go mod tidy
       go mod vendor
     ```
 2. Run service on docker with kafka
     ```
+      cd ..
       cd dipayemail
       docker-compose up -d 
     ```
+  <img src="./readme/dipayemail-docker.png" height="200">
+
+
+#note
+
+Please run 2 terminal 
+- first terminal run service 
+- second terminal run service b / sender email
 
 Unit Test:
 1. Run Unit test

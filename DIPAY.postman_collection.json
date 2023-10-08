@@ -10,6 +10,40 @@
 			"name": "employee",
 			"item": [
 				{
+					"name": "Add Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNjk5MjUsInN1YiI6Ik9iamVjdElEKFwiNjUyMWM2ODUzMzMyZDY3YmY5ODIyZDdiXCIpIiwidG9rZW5fdXVpZCI6IjRkYzZkZGViLTk2MjUtNGE5OS05NDFjLWEyZmQ3ZTAwZTVlYSIsInVzZXJuYW1lIjoiWlhDYXNkcXdlMTIzMjMyMzIhIn0.2t9LAh1gCB_JZjjaOdToMC2i7XIq_SVGxSfTYtXml_jdcPX5OJsRqBGCusa9SlBp-vkYF0LVuZjEnPWpdgkgAQ"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"employee\",\n    \"email\": \"dipayy2324123322@email.com\",\n    \"phone_number\": \"+62345345345222\",\n    \"jobtitle\": \"ManaGer\"\n}"
+						},
+						"url": {
+							"raw": "localhost:7000/api/companies/6522336bc8089f27533f80eb/employees",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"companies",
+								"6522336bc8089f27533f80eb",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Employee By Company ID",
 					"request": {
 						"method": "GET",
@@ -24,15 +58,15 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:1323/api/companies/65206e8ad279a2723f4b9a52/employees",
+							"raw": "localhost:7000/api/companies/6522336bc8089f27533f80eb/employees",
 							"host": [
 								"localhost"
 							],
-							"port": "1323",
+							"port": "7000",
 							"path": [
 								"api",
 								"companies",
-								"65206e8ad279a2723f4b9a52",
+								"6522336bc8089f27533f80eb",
 								"employees"
 							]
 						}
@@ -61,49 +95,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:1323/api/employees/6520739e46b447b827a45557",
+							"raw": "localhost:7000/api/employees/6522341dc8089f27533f80ee",
 							"host": [
 								"localhost"
 							],
-							"port": "1323",
+							"port": "7000",
 							"path": [
 								"api",
 								"employees",
-								"6520739e46b447b827a45557"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Employee",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgxODA2MzMsInN1YiI6Ik9iamVjdElEKFwiNjUyMDY5NzI4ODYzYjQ4YWM5NjczM2Y2XCIpIiwidG9rZW5fdXVpZCI6IjIzNmYyNDQxLTc0N2EtNDdhZS05NWQzLWM4M2UwNzUxOGMwMCIsInVzZXJuYW1lIjoicmlma3kzIn0.OkN4-_Kfr3TpH7Drdni8VCefq0bQgvV4ZZlzvs8ULifBJsUAGZtANmNsMLXfo5u6EYjEAeE3GFgvQjY6v4Pm0w"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"employee\",\n    \"email\": \"rifk1111y2342332@email.com\",\n    \"phone_number\": \"+62345345345222\",\n    \"jobtitle\": \"ManaGer\"\n}"
-						},
-						"url": {
-							"raw": "localhost:1323/api/companies/65207a9403ab636e48923258/employees",
-							"host": [
-								"localhost"
-							],
-							"port": "1323",
-							"path": [
-								"api",
-								"companies",
-								"65207a9403ab636e48923258",
-								"employees"
+								"6522341dc8089f27533f80ee"
 							]
 						}
 					},
@@ -125,20 +125,20 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"employee\",\n    \"email\": \"rifk11112@email.com\",\n    \"phone_number\": \"+62345345345222\",\n    \"jobtitle\": \"manager\"\n}"
+							"raw": "{\n    \"name\": \"employee\",\n    \"email\": \"dipayupdate@email.com\",\n    \"phone_number\": \"+62345345345222\",\n    \"jobtitle\": \"manager\"\n}"
 						},
 						"url": {
-							"raw": "localhost:1323/api/companies/65206e8ad279a2723f4b9a52/employees/6520739e46b447b827a45557",
+							"raw": "localhost:7000/api/companies/6522336bc8089f27533f80eb/employees/6522341dc8089f27533f80ee",
 							"host": [
 								"localhost"
 							],
-							"port": "1323",
+							"port": "7000",
 							"path": [
 								"api",
 								"companies",
-								"65206e8ad279a2723f4b9a52",
+								"6522336bc8089f27533f80eb",
 								"employees",
-								"6520739e46b447b827a45557"
+								"6522341dc8089f27533f80ee"
 							]
 						}
 					},
@@ -163,15 +163,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:1323/api/employees/651e79441e7210b57e943cfc",
+							"raw": "localhost:7000/api/employees/6522341dc8089f27533f80ee",
 							"host": [
 								"localhost"
 							],
-							"port": "1323",
+							"port": "7000",
 							"path": [
 								"api",
 								"employees",
-								"651e79441e7210b57e943cfc"
+								"6522341dc8089f27533f80ee"
 							]
 						}
 					},
@@ -202,11 +202,11 @@
 							"raw": "{\n    \"company_name\": \"company name\",\n    \"telephone_number\": \"+62857089954612364\",\n    \"address\": \"123456555333\"\n}"
 						},
 						"url": {
-							"raw": "localhost:1323/api/companies",
+							"raw": "localhost:7000/api/companies",
 							"host": [
 								"localhost"
 							],
-							"port": "1323",
+							"port": "7000",
 							"path": [
 								"api",
 								"companies"
@@ -234,14 +234,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"company_name\": \"rifky\",\n    \"telephone_number\": \"ZXCasdqwe123!\",\n    \"address\": \"address!\"\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:1323/api/companies",
+							"raw": "localhost:7000/api/companies",
 							"host": [
 								"localhost"
 							],
-							"port": "1323",
+							"port": "7000",
 							"path": [
 								"api",
 								"companies"
@@ -269,15 +269,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:1323/api/companies/65207a9403ab636e48923258/set_active",
+							"raw": "localhost:7000/api/companies/6522336bc8089f27533f80eb/set_active",
 							"host": [
 								"localhost"
 							],
-							"port": "1323",
+							"port": "7000",
 							"path": [
 								"api",
 								"companies",
-								"65207a9403ab636e48923258",
+								"6522336bc8089f27533f80eb",
 								"set_active"
 							]
 						}
@@ -302,7 +302,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"rifky3\",\n    \"password\": \"ZXCasdqwe123!\"\n}"
+							"raw": "{\n    \"username\": \"dipayAdmin\",\n    \"password\": \"ZXCasdqwe12323232!\"\n}"
 						},
 						"url": {
 							"raw": "localhost:7000/api/login",
@@ -335,11 +335,11 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:1323/api/countries",
+					"raw": "localhost:7000/api/countries",
 					"host": [
 						"localhost"
 					],
-					"port": "1323",
+					"port": "7000",
 					"path": [
 						"api",
 						"countries"
@@ -368,11 +368,11 @@
 					"raw": "{\n    \"n\": [1, 0, 2, 3, 0, 4, 5, 0]\n}"
 				},
 				"url": {
-					"raw": "localhost:1323/api/duplicate-zeroes",
+					"raw": "localhost:7000/api/duplicate-zeroes",
 					"host": [
 						"localhost"
 					],
-					"port": "1323",
+					"port": "7000",
 					"path": [
 						"api",
 						"duplicate-zeroes"

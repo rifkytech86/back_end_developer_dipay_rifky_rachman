@@ -68,6 +68,7 @@ func setMiddleware(e *echo.Echo, jwt jwt.IJWTRSAToken) *echo.Echo {
 		routeGroup.GET("/employees/:id")
 		routeGroup.GET("/companies/:id/employees")
 		routeGroup.PUT("/companies/:id/employees/:id")
+		routeGroup.POST("/companies/:id/employees")
 		routeGroup.GET("/countries")
 	}
 	e.Use(mwRoot.Exec)
